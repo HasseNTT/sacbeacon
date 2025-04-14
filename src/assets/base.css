@@ -1,0 +1,89 @@
+/* Regular */
+@font-face {
+  font-family: '72';
+  src: url('@/assets/fonts/72-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Bold */
+@font-face {
+  font-family: '72';
+  src: url('@/assets/fonts/72-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Italic */
+@font-face {
+  font-family: '72';
+  src: url('@/assets/fonts/72-Italic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: '72';
+  src: url('@/assets/fonts/72-BoldItalic.woff2') format('woff2');
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* Black */
+@font-face {
+  font-family: '72';
+  src: url('@/assets/fonts/72-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Condensed */
+@font-face {
+  font-family: '72-condensed';
+  src: url('@/assets/fonts/72-Condensed.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Condensed Bold */
+@font-face {
+  font-family: '72-condensed';
+  src: url('@/assets/fonts/72-CondensedBold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Light */
+@font-face {
+  font-family: '72';
+  src: url('@/assets/fonts/72-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* Semibold */
+@font-face {
+  font-family: '72';
+  src: url('@/assets/fonts/72-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Semibold Duplex */
+@font-face {
+  font-family: '72-duplex';
+  src: url('@/assets/fonts/72-SemiboldDuplex.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+* {
+  font-family: '72';
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #ececed;
+}
