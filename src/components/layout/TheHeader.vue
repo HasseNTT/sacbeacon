@@ -27,40 +27,24 @@
 </template>
 
 <script setup>
-import { inject, provide } from 'vue'
-import { useFteStore } from '@/stores/fteStore'
+import { useRouter } from 'vue-router'
 import HeaderButton from './HeaderButton.vue'
 import PublishIcon from '../icons/PublishIcon.vue'
 import RevertIcon from '../icons/RevertIcon.vue'
 
-// Get the store instance
-const fteStore = useFteStore()
+const router = useRouter()
 
-// Inject the resetEditedCells function if it exists
-// This will be provided by the FTE table component
-let resetEditedCells = inject('resetEditedCells', null)
-
+// Handle publish button click
 const handlePublish = () => {
-  // Handle publish button click
   console.log('Publishing data')
 }
 
+// Handle revert button click
 const handleRevert = async () => {
   try {
-    // Show loading state
-    fteStore.isLoading = true
-
-    // Refresh data from API
-    await fteStore.initializeData()
-
-    // Reset edited cells tracking if the function is available
-    if (resetEditedCells) {
-      resetEditedCells()
-    }
+    router.go(0) // This is equivalent to browser's refresh
   } catch (error) {
     console.error('Error reverting data:', error)
-  } finally {
-    // Hide loading state
     fteStore.isLoading = false
   }
 }

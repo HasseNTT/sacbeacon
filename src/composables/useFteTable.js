@@ -4,6 +4,9 @@ export function useFteTable(fteStore, selectedCostCenter, year) {
   // Track edited cells - using reactive for better reactivity
   const editedCells = reactive({})
 
+  // Add reference to grid API
+  const gridApi = ref(null)
+
   // Helper function to format numbers with 2 decimal places
   const formatNumber = (value) => {
     return value !== undefined ? Number(value).toFixed(2) : '0.00'
@@ -64,6 +67,11 @@ export function useFteTable(fteStore, selectedCostCenter, year) {
         })
       }
     }
+  }
+
+  // Store grid API when grid is ready
+  const onGridReady = (params) => {
+    gridApi.value = params.api
   }
 
   // Generate dynamic column definitions
@@ -180,36 +188,32 @@ export function useFteTable(fteStore, selectedCostCenter, year) {
     })
   })
 
-  // Filter row data based on selected cost center
-  const filteredRowData = computed(() => {
-    if (!selectedCostCenter.value) {
-      return processedRowData.value
-    }
-    return processedRowData.value.filter((row) => row.costcenter === selectedCostCenter.value)
-  })
-
-  // Default column definition
-  const defaultColDef = {
-    sortable: true,
-    filter: true,
-    resizable: true,
-  }
-
   // Reset all edited cells tracking
   const resetEditedCells = () => {
+    // Clear all tracked edited cells
     Object.keys(editedCells).forEach((key) => {
       delete editedCells[key]
     })
+
+    // Force refresh all cells to update styling
+    if (gridApi.value) {
+      gridApi.value.refreshCells({ force: true })
+    }
   }
 
   return {
     colDefs,
     processedRowData,
-    filteredRowData,
-    defaultColDef,
+    defaultColDef: {
+      sortable: true,
+      filter: true,
+      resizable: true,
+    },
     formatNumber,
     onCellValueChanged,
+    onGridReady,
     resetEditedCells,
     editedCells,
+    gridApi,
   }
 }
