@@ -1,7 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import sacService from '@/services/sacService'
-import authConfig from './helpers/authConfig'
+import { useAuthStore } from './authStore'
 
 export const useFteStore = defineStore('fteData', () => {
   // State
@@ -9,26 +8,9 @@ export const useFteStore = defineStore('fteData', () => {
   const costCenters = ref([])
   const isLoading = ref(false)
   const error = ref(null)
-  const accessToken = ref(null)
 
-  // Authentication
-  const authenticate = async () => {
-    if (accessToken.value) return accessToken.value
-
-    try {
-      const token = await sacService.authenticate(
-        authConfig.clientId,
-        authConfig.clientSecret,
-        authConfig.tokenUrl,
-      )
-      accessToken.value = token
-      return token
-    } catch (err) {
-      console.error('Authentication failed:', err)
-      error.value = 'Authentication failed: ' + (err.message || 'Unknown error')
-      throw err
-    }
-  }
+  // Get the auth store
+  const authStore = useAuthStore()
 
   // Actions
   const fetchFteData = async () => {
@@ -36,9 +18,10 @@ export const useFteStore = defineStore('fteData', () => {
     error.value = null
 
     try {
-      const token = await authenticate()
+      // Get the auth configuration from the auth store
+      const { config } = authStore
 
-      const endpoint = `${authConfig.apiBaseUrl}${authConfig.factDataEndpoint}`
+      const endpoint = `${config.apiBaseUrl}${config.factDataEndpoint}`
       const filter =
         "Version eq 'public.APP GL Budget' " +
         "and HUSQ_ACCOUNT_GL_BU_SGA eq 'NOT_IN_HIERARCHY' " +
@@ -56,7 +39,8 @@ export const useFteStore = defineStore('fteData', () => {
 
       const fullEndpoint = `${endpoint}?$filter=${encodeURIComponent(filter)}&$select=${encodeURIComponent(select)}`
 
-      const response = await sacService.fetchSacData(token, fullEndpoint)
+      // Use the auth store to fetch data
+      const response = await authStore.fetchSacData(fullEndpoint)
 
       if (response && response.value) {
         if (response.value.length > 0) {
@@ -87,15 +71,18 @@ export const useFteStore = defineStore('fteData', () => {
     error.value = null
 
     try {
-      const token = await authenticate()
+      // Get the auth configuration from the auth store
+      const { config } = authStore
 
-      const endpoint = `${authConfig.apiBaseUrl}${authConfig.costCenterEndpoint}`
+      // Use filter to get only open cost centers
+      const filter = "Status eq 'Open' and Level_2 eq 'SG&A'"
+      const endpoint = `${config.apiBaseUrl}${config.costCenterEndpoint}?$filter=${encodeURIComponent(filter)}`
 
-      const response = await sacService.fetchSacData(token, endpoint)
+      // Use the auth store to fetch data
+      const response = await authStore.fetchSacData(endpoint)
 
       if (response && response.value) {
-        // Filter only open cost centers
-        costCenters.value = response.value.filter((cc) => cc.Status === 'Open')
+        costCenters.value = response.value
       } else {
         throw new Error('Invalid response format from cost center API')
       }
