@@ -1,15 +1,13 @@
 <template>
   <div class="container">
     <div class="cost-center-selector">
-      <p>Cost Center:</p>
-
       <!-- Hierarchical Selector Component -->
       <HierarchicalSelector
         v-model="selectedCostCenters"
         :options="hierarchicalCostCenters"
         :all-items="allCostCenterItems"
         placeholder="Select cost centers..."
-        searchPlaceholder="Search cost centers..."
+        searchPlaceholder="Search for cost centers..."
         class="selector-control"
       />
 
@@ -46,7 +44,7 @@ import { ModuleRegistry, ClientSideRowModelModule, AllCommunityModule } from 'ag
 import { useFteStore } from '@/stores/fteStore'
 import { useFteTable } from '@/composables/useFteTable'
 import { useCostCenterHierarchy } from '@/composables/useCostCenterHierarchy'
-import HierarchicalSelector from '@/components/fte/HierarchicalSelector.vue'
+import HierarchicalSelector from '../HierarchicalSelector.vue'
 
 // Register all Community features
 ModuleRegistry.registerModules([AllCommunityModule])
@@ -154,7 +152,7 @@ export default {
 }
 
 .cost-center-selector {
-  margin-bottom: 16px;
+  margin: 10px 0 5px 0;
 }
 
 .selector-control {
@@ -210,6 +208,7 @@ export default {
 
 :deep(.values-column) {
   background-color: rgba(33, 150, 243, 0.08);
+  text-align: right;
 }
 
 :deep(.edited-cell) {

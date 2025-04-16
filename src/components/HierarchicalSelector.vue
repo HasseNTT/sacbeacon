@@ -306,10 +306,13 @@ export default {
 .search-container {
   padding: 8px 12px;
   border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
 }
 
 .search-container input {
-  width: 100%;
+  margin: auto;
+  width: 95%;
   padding: 6px 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
